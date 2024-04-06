@@ -23,6 +23,7 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
+        'python-dotenv==1.0.1',
         "aiohttp>=3.8.1",
         "aiomqtt>=2.0.0,<3.0.0",
         "pydantic>=1.9.0",

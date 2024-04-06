@@ -32,7 +32,7 @@ class YoLinkClient:
             # Ensure token valid
             await self._auth_mgr.check_and_refresh_token()
             # Set auth header
-            headers["Authorization"] = self._auth_mgr.http_auth_header()
+            headers["Authorization"] = await self._auth_mgr.http_auth_header()
         # Extend with optionally supplied values
         if extra_headers:
             headers.update(extra_headers)
@@ -44,6 +44,7 @@ class YoLinkClient:
             # form encoded post data
             data = data or {}
             data.update(extra_data)
+
         return await self._auth_mgr.client_session().request(
             method, url, **kwargs, headers=headers, params=params, data=data, timeout=8
         )

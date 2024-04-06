@@ -11,6 +11,7 @@ class Endpoint:
     name: str
     host: str
     url: str
+    token_url: str
     mqtt_broker_host: str
     mqtt_broker_port: int = 8003
 
@@ -19,6 +20,7 @@ class Endpoint:
         self.name = name
         self.host = host
         self.url = f"https://{host}/open/yolink/v2/api"
+        self.token_url = f"https://{host}/open/yolink/token"
         self.mqtt_broker_host = host
         self.mqtt_broker_port = 8003
 

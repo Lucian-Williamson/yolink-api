@@ -85,9 +85,7 @@ class YoLinkHome:
         )
         for _device in response.data["devices"]:
             _yl_device = YoLinkDevice(YoLinkDeviceMode(**_device), self._http_client)
-            self._endpoints[
-                _yl_device.device_endpoint.name
-            ] = _yl_device.device_endpoint
+            self._endpoints[_yl_device.device_id] = _yl_device.device_endpoint
             try:
                 dev_external_data_resp = await _yl_device.get_external_data()
                 _yl_device.device_attrs = dev_external_data_resp.data["extData"]
