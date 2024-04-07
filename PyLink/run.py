@@ -1,6 +1,5 @@
 import asyncio
 
-
 import aiohttp
 from dotenv import dotenv_values
 
@@ -40,12 +39,13 @@ async def main():
             else:
                 attempt_connection = False
 
+        result = await ylm.async_get_home_info()
+
         x = 10
         pass
-        # await ylm.async_get_home_info()
-        pass
+
 
 if __name__ == "__main__":
-# Running the main function within an event loop
+    # Running the main function within an event loop
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())

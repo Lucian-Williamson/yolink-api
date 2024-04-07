@@ -1,15 +1,17 @@
 """YoLink home manager."""
 from __future__ import annotations
+
 import logging
 from typing import Any
+
 from .auth_mgr import YoLinkAuthMgr
 from .client import YoLinkClient
 from .device import YoLinkDevice, YoLinkDeviceMode
+from .endpoint import Endpoint, Endpoints
 from .exception import YoLinkClientError, YoLinkUnSupportedMethodError
 from .message_listener import MessageListener
 from .model import BRDP
 from .mqtt_client import YoLinkMqttClient
-from .endpoint import Endpoint, Endpoints
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,7 +28,7 @@ class YoLinkHome:
         self._message_listener: MessageListener = None
 
     async def async_setup(
-        self, auth_mgr: YoLinkAuthMgr, listener: MessageListener
+            self, auth_mgr: YoLinkAuthMgr, listener: MessageListener
     ) -> None:
         """Init YoLink home."""
         if not auth_mgr:
@@ -42,7 +44,7 @@ class YoLinkHome:
         # setup yolink mqtt connection
         self._message_listener = listener
         # setup yolink mqtt clients
-        for endpoint in self._endpoints.values():
+        for endpoint in self._endpoints.values():  # type: Endpoint
             endpoint_mqtt_client = YoLinkMqttClient(
                 auth_manager=auth_mgr,
                 endpoint=endpoint.name,
@@ -84,8 +86,9 @@ class YoLinkHome:
             url=Endpoints.US.value.url, bsdp={"method": "Home.getDeviceList"}, **kwargs
         )
         for _device in response.data["devices"]:
-            _yl_device = YoLinkDevice(YoLinkDeviceMode(**_device), self._http_client)
-            self._endpoints[_yl_device.device_id] = _yl_device.device_endpoint
+            ydm = YoLinkDeviceMode(**_device)
+            _yl_device = YoLinkDevice(ydm, self._http_client)
+            self._endpoints[_yl_device.device_endpoint.name] = (_yl_device.device_endpoint)
             try:
                 dev_external_data_resp = await _yl_device.get_external_data()
                 _yl_device.device_attrs = dev_external_data_resp.data["extData"]

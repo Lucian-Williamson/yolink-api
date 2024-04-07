@@ -26,12 +26,12 @@ class YoLinkMqttClient:
     """YoLink mqtt client."""
 
     def __init__(
-        self,
-        auth_manager: YoLinkAuthMgr,
-        endpoint: str,
-        broker_host: str,
-        broker_port: int,
-        home_devices: dict[str, YoLinkDevice],
+            self,
+            auth_manager: YoLinkAuthMgr,
+            endpoint: str,
+            broker_host: str,
+            broker_port: int,
+            home_devices: dict[str, YoLinkDevice],
     ) -> None:
         self._auth_mgr = auth_manager
         self._endpoint = endpoint
@@ -57,11 +57,11 @@ class YoLinkMqttClient:
         while self._running:
             try:
                 async with aiomqtt.Client(
-                    hostname=self._broker_host,
-                    port=self._broker_port,
-                    username=self._auth_mgr.access_token(),
-                    password="",
-                    keepalive=50,
+                        hostname=self._broker_host,
+                        port=self._broker_port,
+                        username=await self._auth_mgr.access_token(),
+                        password="",
+                        keepalive=50,
                 ) as client:
                     _LOGGER.info(
                         "[%s] connecting to yolink mqtt broker.", self._endpoint
